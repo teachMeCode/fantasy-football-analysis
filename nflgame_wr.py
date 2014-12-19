@@ -23,7 +23,7 @@ import csv
 
 # time param
 # p.player will give you the position included in the name
-week_str = 13
+week_str = 15
 subject = 'receiving'
 
 #-------------- MULTI WEEK OUTPUT -----------------------------------
