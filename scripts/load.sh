@@ -4,9 +4,10 @@
 # Data load script to local postgres db
 # This script can be used to load multiple nflgame csv files or a single one at a time
 #
+# Single load from the psql cmd line 
 #
-#
-#
+# \connect <database name>
+# COPY <target table> FROM '/path/to/db/file.csv' DELIMITER ',' CSV;
 #
 ######################################################################################################
 
