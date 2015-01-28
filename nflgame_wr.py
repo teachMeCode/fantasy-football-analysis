@@ -23,63 +23,64 @@ import csv
 
 # time param
 # p.player will give you the position included in the name
-week_str = 15
+week_str = 1
 subject = 'receiving'
 
 #-------------- MULTI WEEK OUTPUT -----------------------------------
 
-# for week_str in range(1,12):
-#     game = nflgame.games(2014, week=week_str)
-#     players = nflgame.combine_max_stats(game)
-#     demo = nflgame.players
-#     headers = ["NEWPLAYER", "PLAYER", "WEEK", "TEAM", "HOME", "RECEIVING_LNG", "RECEIVING_LNGTD", "RECEIVING_REC", "RECEIVING_TAR", "RECEIVING_TDS", "RECEIVING_TWOPTA", "RECEIVING_TWOPTM", "RECEIVING_TWOPTMISSED", "RECEIVING_YAC_YDS", "RECEIVING_YDS"]
-#     with open("2014_%s_wk%d_max_stats_no_header.csv" % (subject, week_str), 'wb') as f: 
-#         writer = csv.writer(f,delimiter=",")
-#         #writer.writerow(headers)
-#         for p in players.receiving():
-#             writer.writerow([
-#                 p, 
-#                 "%d" % (week_str), 
-#                 p.team, 
-#                 p.home, 
-#                 p.receiving_lng, 
-#                 p.receiving_lngtd, 
-#                 p.receiving_rec, 
-#                 p.receiving_tar, 
-#                 p.receiving_tds, 
-#                 p.receiving_twopta, 
-#                 p.receiving_twoptm, 
-#                 p.receiving_twoptmissed, 
-#                 p.receiving_yac_yds, 
-#                 p.receiving_yds])
-# week_str +=1  
-
+for week_str in range(1,18): # this will run up to the week 17
+    game = nflgame.games(2009, week=week_str)
+    players = nflgame.combine_max_stats(game)
+    demo = nflgame.players
+    headers = ["NEWPLAYER", "PLAYER", "WEEK", "TEAM", "HOME", "RECEIVING_LNG", "RECEIVING_LNGTD", "RECEIVING_REC", "RECEIVING_TAR", "RECEIVING_TDS", "RECEIVING_TWOPTA", "RECEIVING_TWOPTM", "RECEIVING_TWOPTMISSED", "RECEIVING_YAC_YDS", "RECEIVING_YDS"]
+    with open("2009_%s_wk%d_max_stats_no_header.csv" % (subject, week_str), 'wb') as f: 
+        writer = csv.writer(f,delimiter=",")
+        #writer.writerow(headers)
+        for p in players.receiving():
+            writer.writerow([
+                p, 
+                "2009",
+                "%d" % (week_str), 
+                p.team, 
+                p.home, 
+                p.receiving_lng, 
+                p.receiving_lngtd, 
+                p.receiving_rec, 
+                p.receiving_tar, 
+                p.receiving_tds, 
+                p.receiving_twopta, 
+                p.receiving_twoptm, 
+                p.receiving_twoptmissed, 
+                p.receiving_yac_yds, 
+                p.receiving_yds])
+week_str +=1  
+print ("Script complete")
 
 # ------------------ SINGLE WEEK OUTPUT -----------------------------
 
-game = nflgame.games(2014, week=week_str)
-players = nflgame.combine_max_stats(game)
-demo = nflgame.players
-headers = ["NEWPLAYER", "PLAYER", "WEEK", "TEAM", "HOME", "RECEIVING_LNG", "RECEIVING_LNGTD", "RECEIVING_REC", "RECEIVING_TAR", "RECEIVING_TDS", "RECEIVING_TWOPTA", "RECEIVING_TWOPTM", "RECEIVING_TWOPTMISSED", "RECEIVING_YAC_YDS", "RECEIVING_YDS"]
-with open("2014_%s_wk%d_max_stats_no_header.csv" % (subject, week_str), 'wb') as f: 
-    writer = csv.writer(f,delimiter=",")
-    #writer.writerow(headers)
-    for p in players.receiving():
-        writer.writerow([
-            p, 
-            "%d" % (week_str), 
-            p.team, 
-            p.home, 
-            p.receiving_lng, 
-            p.receiving_lngtd, 
-            p.receiving_rec, 
-            p.receiving_tar, 
-            p.receiving_tds, 
-            p.receiving_twopta, 
-            p.receiving_twoptm, 
-            p.receiving_twoptmissed, 
-            p.receiving_yac_yds, 
-            p.receiving_yds])
+# game = nflgame.games(2014, week=week_str)
+# players = nflgame.combine_max_stats(game)
+# demo = nflgame.players
+# headers = ["NEWPLAYER", "PLAYER", "WEEK", "TEAM", "HOME", "RECEIVING_LNG", "RECEIVING_LNGTD", "RECEIVING_REC", "RECEIVING_TAR", "RECEIVING_TDS", "RECEIVING_TWOPTA", "RECEIVING_TWOPTM", "RECEIVING_TWOPTMISSED", "RECEIVING_YAC_YDS", "RECEIVING_YDS"]
+# with open("2014_%s_wk%d_max_stats_no_header.csv" % (subject, week_str), 'wb') as f: 
+#     writer = csv.writer(f,delimiter=",")
+#     #writer.writerow(headers)
+#     for p in players.receiving():
+#         writer.writerow([
+#             p, 
+#             "%d" % (week_str), 
+#             p.team, 
+#             p.home, 
+#             p.receiving_lng, 
+#             p.receiving_lngtd, 
+#             p.receiving_rec, 
+#             p.receiving_tar, 
+#             p.receiving_tds, 
+#             p.receiving_twopta, 
+#             p.receiving_twoptm, 
+#             p.receiving_twoptmissed, 
+#             p.receiving_yac_yds, 
+#             p.receiving_yds])
 
 
 

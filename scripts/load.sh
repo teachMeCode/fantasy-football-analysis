@@ -20,9 +20,10 @@
 # --------- loop through multiple files -----------------
 # control the limit by adjusting the range of the while statement
 
+
 cnt=1
-while [ $cnt -lt 16 ]
+while [ $cnt -lt 18 ]
 do
-  sudo -u brian psql -d nflgame -c "\COPY nflgame_rushing FROM '/Users/Brian/programming/nflgame/data/2014_rushing_wk"$cnt"_max_stats_no_header.csv' DELIMITER ',' CSV;"
+  sudo -u brian psql -d nflgame -c "\COPY nflgame_receiving FROM '/Users/Brian/programming/nflgame/data/2009_receiving_wk"$cnt"_max_stats_no_header.csv' DELIMITER ',' CSV;"
   cnt=$[$cnt+1]
 done
