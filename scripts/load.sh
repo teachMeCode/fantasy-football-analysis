@@ -9,6 +9,10 @@
 # \connect <database name>
 # COPY <target table> FROM '/path/to/db/file.csv' DELIMITER ',' CSV;
 #
+# Export Table to CSV
+# \COPY <table> TO <'file/location/and/name.csv' DELIMITER ',' CSV HEADER>
+#
+#
 ######################################################################################################
 
 #sudo -u brian psql -d nflgame -c "SELECT * FROM nflgame_rushing;"
