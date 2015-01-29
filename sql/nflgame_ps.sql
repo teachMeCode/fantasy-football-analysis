@@ -12,8 +12,28 @@ from nflgame_2014_full_year
 )
 ;
 
-select * from nflgame_2014_full_year_v;
+select * from nflgame_2014_full_year;
 analyze nflgame_2014_full_year;
+
+create table NFLGAME_2009_FULL_YEAR (
+ NAME varchar(25),
+ ID varchar(10),
+ TEAM char(5),
+ POS char(5),
+ YEAR integer,
+ PRIMARY KEY (name,id,year)
+);
+
+select 
+a.name as "2014 RB",
+a.pos,
+b.name as "2009 RB",
+b.pos
+from nflgame_2014_full_year a
+full outer join nflgame_2009_full_year b 
+on a.name = b.name 
+and a.id = b.id
+;
 
 -----------------------------------------------------
 -- ALL PLAYER
@@ -48,38 +68,88 @@ create table NFLGAME_RUSHING (
 );
 
 analyse nflgame_rushing;
+select * into nflgame_rushing_fact_tbl from 
+(
+select
+a.player,
+a.year,
+a.week,
+b.pos,
+case
+ when rushing_yds = 0 and rushing_att = 0 and rushing_tds = 0 
+  then 0
+ else 1
+end weeks_played,
+a.rushing_att,
+a.rushing_yds,
+a.rushing_tds
+from nflgame_rushing a
+inner join nflgame_2014_full_year b
+on a.player = b.name 
+and a.team = b.team
+where a.year in (2012,2013,2014)
+and b.pos in ('RB')
+--and weeks_played >= 13
+and rushing_yds > 0 and rushing_att > 0 and rushing_tds > 0
+--order by 6 desc,7 desc,8 desc
+) a;
 
-select * from nflgame_rushing order by rushing_yds desc;
-select max(week) from nflgame_rushing where year in (2014);
-select * from nflgame_rushing where year in (2014);
+
+select
+a.player,
+b.pos,
+corr(rushing_att,rushing_tds) corr_att_to_tds,
+corr(rushing_yds,rushing_tds) corr_yds_to_tds,
+sum(
+ case
+  when rushing_yds = 0 and rushing_att = 0 and rushing_tds = 0 then 0
+   else 1
+ end)/3 weeks_played,
+cast(avg(rushing_att) as DECIMAL(6,2)) avg_rushing_atts,
+cast(avg(rushing_yds) as DECIMAL(6,2)) avg_rushing_yards,
+cast(avg(rushing_tds) as DECIMAL(6,2)) avg_rushing_tds,
+cast(avg(rushing_yds) as DECIMAL(8,2)) / cast(avg(rushing_tds) as DECIMAL(8,2)) "rushing_yds_ratio",
+cast(avg(rushing_att) as DECIMAL(6,2)) / cast(avg(rushing_tds) as DECIMAL(6,2)) "rushing_att_ratio"
+from nflgame_rushing a
+inner join nflgame_2014_full_year b
+on a.player = b.name 
+and a.team = b.team
+where a.year in (2012,2013,2014)
+and b.pos in ('RB')
+--and weeks_played >= 13
+group by a.player,b.pos
+having sum(rushing_yds) > 0 and sum(rushing_att) > 0 and sum(rushing_tds) > 0
+order by 6 desc
+limit 50
+;
 
 select 
-year,
-count(*) the_count
-from nflgame_rushing
+player,
+sum(rushing_tds) 
+from nflgame_rushing_fact_tbl
+where year in (2014)
 group by 1
-order by 1 asc
+having sum(rushing_yds) > 0 and sum(rushing_att) > 0 and sum(rushing_tds) > 0
+order by 2 desc
+limit 30
+;
+
+-- how many weeks did you play
+select
+sum(
+ case
+  when rushing_yds = 0 and rushing_att = 0 and rushing_tds = 0 then 0
+   else 1
+ end) weeks_played
+from nflgame_rushing
+where player in ('A.Foster')
+and year in (2014)
 ;
 
 select
 player,
-avg(rushing_yds) avg_rushing_yds,
-avg(rushing_tds) avg_rushing_tds
-from nflgame_rushing
-where year in (2014)
-group by 1
-order by 2 desc
-;
-
-select
-week,
-rushing_yds,
-rushing_tds
-from nflgame_rushing
-where player in ('D.Murray')
-and year in (2014)
-order by 1
-;
+sum(rushing_tds) rushing_tds
+from nflgame_rushing_fact_tbl
 
 -----------------------------------------------------
 -- PASSING
